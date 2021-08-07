@@ -31,7 +31,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         LoginDto dto = new LoginDto();
         dto.setPath("redirect:/");
 
-        Account account = lambdaQuery().eq(Account::getRealName, username).one();
+        Account account = lambdaQuery().eq(Account::getUsername, username).one();
 
         if (account == null) {
             dto.setError("用户名不存在");
