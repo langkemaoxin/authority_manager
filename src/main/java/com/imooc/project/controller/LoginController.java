@@ -1,15 +1,20 @@
 package com.imooc.project.controller;
 
 import com.imooc.project.dto.LoginDto;
+import com.imooc.project.dto.ResourceVO;
 import com.imooc.project.service.AccountService;
+import com.imooc.project.service.ResourceService;
+import com.imooc.project.service.RoleResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("auth")
@@ -17,6 +22,9 @@ public class LoginController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private ResourceService resourceService;
 
     /**
      * @param username
@@ -27,7 +35,8 @@ public class LoginController {
      * @PostMapping 注解用来声明一个请求
      */
     @PostMapping("login")
-    public String login(String username, String password, HttpSession httpSession, RedirectAttributes attributes) {
+    public String login(String username, String password, HttpSession httpSession,
+                        RedirectAttributes attributes, Model model) {
 
         LoginDto loginDto = accountService.login(username, password);
 
@@ -35,6 +44,11 @@ public class LoginController {
 
         if (error == null) {
             httpSession.setAttribute("account", loginDto.getAccount());
+
+            //一般的业务模型，还是得放在model之中
+            List<ResourceVO> resourceVOS = resourceService.listResourceByRoleId(loginDto.getAccount().getRoleId());
+            model.addAttribute("resources",resourceVOS);
+
         } else {
 
             //使用这种方式，在重定向后再url中增加参数，暴露了参数，
