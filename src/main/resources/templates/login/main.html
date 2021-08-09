@@ -37,7 +37,8 @@
                     <a class="" href="javascript:;" th:text="${resource.resourceName}">所有商品</a>
 
                     <dl class="layui-nav-child" th:if="${resource.subs} ne null" th:each="sub:${resource.subs}">
-                        <dd><a href="" th:text="${sub.resourceName}">超链接</a></dd>
+                        <dd><a th:href="'javascript:showTab(\''+${sub.url}+'\',\''+${sub.resourceName}+'\','+${sub.resourceId}+');'"
+                               th:text="${sub.resourceName}">超链接</a></dd>
                     </dl>
                 </li>
 
@@ -49,10 +50,10 @@
         <!-- 内容主体区域 -->
         <div class="layui-tab" lay-filter="menu" lay-allowClose="true">
             <ul class="layui-tab-title">
-                <li class="layui-this">欢迎页</li>
+                <li class="layui-this">欢迎页1</li>
             </ul>
             <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">欢迎使用本系统</div>
+                <div class="layui-tab-item layui-show">欢迎使用本系统1</div>
             </div>
         </div>
     </div>
@@ -63,5 +64,7 @@
     </div>
 </div>
 <script th:src="@{/webjars/layui/layui.all.js}"></script>
+<script th:src="@{/webjars/jquery/jquery.js}"></script>
+<script th:src="@{/js/login/main.js}"></script>
 </body>
 </html>
