@@ -89,11 +89,6 @@ public class CustomerController {
     @ResponseBody
     public R<Object> add(@RequestBody Customer customer){
 
-        boolean success = customerService.save(customer);
-        if(success){
-            return R.ok(null);
-        }
-
-        return R.failed("操作失败");
+        return ResultUtil.buildR(customerService.save(customer));
     }
 }

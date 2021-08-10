@@ -21,4 +21,17 @@ public class ResultUtil {
 
         return R.ok(data);
     }
+
+    /**
+     * 成功或者失败的响应消息
+     * @param success
+     * @return
+     */
+    public static R<Object> buildR(boolean success){
+        if(success){
+            return R.ok(null);
+        }
+
+        return R.failed("操作失败");
+    }
 }
