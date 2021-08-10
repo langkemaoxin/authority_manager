@@ -10,6 +10,7 @@ import com.imooc.project.entity.Customer;
 import com.imooc.project.service.CustomerService;
 import com.imooc.project.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -90,5 +91,38 @@ public class CustomerController {
     public R<Object> add(@RequestBody Customer customer){
 
         return ResultUtil.buildR(customerService.save(customer));
+    }
+
+
+    /**
+     * 进入修改页
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("toUpdate/{id}")
+    public String toUpdate(@PathVariable Long id, Model model){
+
+        Customer customer = customerService.getById(id);
+
+        model.addAttribute("customer",customer);
+
+        return "customer/customerUpdate";
+    }
+
+    /**
+     * 修改的主方法
+     *
+     * 1、使用PutMapping RestFul风格
+     * 2、使用updateById mybatis的方法
+     * 3、添加注解@ResponseBody 放在方法的前面
+     * 4、接收一个实体的注解 @RequestBody
+     * @param customer
+     * @return
+     */
+    @PutMapping("update")
+    @ResponseBody
+    public R<Object> update(@RequestBody Customer customer){
+        return ResultUtil.buildR(customerService.updateById(customer));
     }
 }
