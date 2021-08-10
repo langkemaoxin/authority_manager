@@ -40,3 +40,46 @@ function query(){
 }
 
 
+function toAdd() {
+
+    //通过获取页面
+    $.get('/customer/toAdd',function (res) {
+        layer.open({
+            type:1
+            ,title:'新增客户'
+            ,area:['800px','450px']
+            ,content:res
+        })
+
+        //渲染页面上的所有元素
+        layui.form.render();
+
+    });
+
+
+
+
+    //监听submit事件时，使用 lay-filter ==> addSubmit
+    layui.form.on('submit(addSubmit)', function(data){
+        $.ajax({
+            url:data.form.action
+            ,async:false
+            ,type:'POST'
+            ,contentType:'application/json;charset=utf-8'
+            ,data:JSON.stringify(data.field)
+            ,success:function (res) {
+
+                if(res.code==0){
+                    layer.closeAll();
+                    query();
+                }else{
+                    layer.alert(res.msg);
+                }
+            }
+        })
+
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+
+}

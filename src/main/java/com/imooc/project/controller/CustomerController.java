@@ -10,11 +10,9 @@ import com.imooc.project.entity.Customer;
 import com.imooc.project.service.CustomerService;
 import com.imooc.project.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +38,16 @@ public class CustomerController {
         //返回模板
         return "customer/customerList";
     }
+
+
+    @GetMapping("toAdd")
+    public String toAdd() {
+
+        //返回模板
+        return "customer/customerAdd";
+    }
+
+
 
     /**
      * 查询方法
@@ -75,5 +83,17 @@ public class CustomerController {
 //        data.put("records", myPage.getRecords());
 //
 //        return R.ok(data);
+    }
+
+    @PostMapping("add")
+    @ResponseBody
+    public R<Object> add(@RequestBody Customer customer){
+
+        boolean success = customerService.save(customer);
+        if(success){
+            return R.ok(null);
+        }
+
+        return R.failed("操作失败");
     }
 }
