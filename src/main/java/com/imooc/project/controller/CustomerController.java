@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.project.entity.Customer;
 import com.imooc.project.service.CustomerService;
+import com.imooc.project.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,10 +60,20 @@ public class CustomerController {
 
         Page<Customer> myPage = customerService.page(new Page<>(page, limit), wrapper);
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("count", myPage.getTotal());
-        data.put("records", myPage.getRecords());
+        //直接使用lambdaQuery进行查询
+        Page<Customer> page1 = customerService.lambdaQuery().like(StringUtils.isNotBlank(realName), Customer::getRealName, realName)
+                .like(StringUtils.isNotBlank(phone), Customer::getPhone, phone)
+                .orderByDesc(Customer::getCustomerId)
+                .page(new Page<>(page, limit));
 
-        return R.ok(data);
+
+        return ResultUtil.buildPageR(page1);
+
+//
+//        HashMap<String, Object> data = new HashMap<>();
+//        data.put("count", myPage.getTotal());
+//        data.put("records", myPage.getRecords());
+//
+//        return R.ok(data);
     }
 }

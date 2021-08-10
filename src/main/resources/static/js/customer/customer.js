@@ -1,7 +1,7 @@
 var table = layui.table;
 
 //第一个实例
-table.render({
+var tableIns= table.render({
     elem: '#customerList'
     ,url: '/customer/list' //数据接口
     ,page: true //开启分页
@@ -22,3 +22,21 @@ table.render({
         ,{title: '操作',toolbar:'#barDemo'}
     ]]
 });
+
+
+function query(){
+
+    //这里以搜索为例
+    tableIns.reload({
+        where: { //设定异步数据接口的额外参数，任意设
+            realName: $("#realName").val()
+            ,phone: $("#phone").val()
+        }
+        ,page: {
+            curr: 1 //重新从第 1 页开始
+        }
+    });
+
+}
+
+
