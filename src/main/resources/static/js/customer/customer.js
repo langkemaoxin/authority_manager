@@ -42,58 +42,12 @@ function query() {
 
 function toAdd() {
 
-
     openLayer('/customer/toAdd', '新增客户')
 
     //渲染页面上的所有元素
     layui.form.render();
 
     mySubmit('addSubmit','POST')
-
-
-}
-
-function openLayer(url, title) {
-
-    //取消异步模式，设置为同步模式
-    $.ajaxSettings.async = false;
-
-    $.get(url, function (res) {
-        layer.open({
-            type: 1
-            , title: title
-            , area: ['800px', '450px']
-            , content: res
-        })
-    });
-
-    $.ajaxSettings.async = true;
-
-}
-
-
-function mySubmit(filer, type) {
-    //监听submit事件时，使用 lay-filter ==> addSubmit
-    layui.form.on('submit('+filer+')', function (data) {
-        $.ajax({
-            url: data.form.action
-            , async: false
-            , type: type
-            , contentType: 'application/json;charset=utf-8'
-            , data: JSON.stringify(data.field)
-            , success: function (res) {
-
-                if (res.code == 0) {
-                    layer.closeAll();
-                    query();
-                } else {
-                    layer.alert(res.msg);
-                }
-            }
-        })
-
-        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-    });
 }
 
 
@@ -114,9 +68,11 @@ table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 
         //do somehing
     } else if(layEvent === 'del'){ //删除
         layer.confirm('真的删除行么', function(index){
-            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+
+            myDelete('/customer/'+customerId);
+
             layer.close(index);
-            //向服务端发送删除指令
+
         });
     } else if(layEvent === 'edit'){ //编辑
 
@@ -129,3 +85,5 @@ table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 
 
     }
 });
+
+
