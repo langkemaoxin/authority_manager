@@ -34,6 +34,14 @@ public class Account extends BaseEntity {
     @ApiModelProperty(value = "角色id")
     private Long roleId;
 
+    /**
+     * 角色名称
+     *
+     * 加入此注解，就可以不做映射了
+     */
+    @TableField(exist = false)
+    private String roleName;
+
     @ApiModelProperty(value = "用户名")
     private String username;
 

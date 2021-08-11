@@ -73,9 +73,11 @@ table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，tes
     } else if (layEvent === 'del') { //删除
         layer.confirm('真的删除行么', function (index) {
 
+            layer.close(index);
+            
             myDelete('/customer/' + customerId);
 
-            layer.close(index);
+
 
         });
     } else if (layEvent === 'edit') { //编辑

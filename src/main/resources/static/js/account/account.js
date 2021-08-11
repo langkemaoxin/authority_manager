@@ -1,3 +1,11 @@
+layui.laydate.render({
+
+    elem:'#createTimeRange'
+    ,range:true
+    //2020-11-12 - 2020-11-20
+});
+
+
 var table = layui.table;
 
 
@@ -17,11 +25,29 @@ var tableIns = table.render({
     , cols: [[ //表头
         , {field: 'username', title: '用户名'}
         , {field: 'realName', title: '真实姓名'}
+        , {field: 'roleName', title: '角色名称'}
         , {field: 'sex', title: '性别'},
         , {field: 'createTime', title: '创建时间'},
         , {title: '操作', toolbar: '#barDemo'}
     ]]
 });
+
+function query() {
+
+    //这里以搜索为例
+    tableIns.reload({
+        where: { //设定异步数据接口的额外参数，任意设
+            realName: $("#realName").val()
+            , email: $("#email").val()
+            ,createTimeRange:$("createTimeRange").val()
+        }
+        , page: {
+            curr: 1 //重新从第 1 页开始
+        }
+    });
+
+}
+
 
 function toAdd() {
     openLayer('/account/toAdd','新增用户');
@@ -46,7 +72,7 @@ table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，tes
     let accountId = data.accountId;
 
     if (layEvent === 'detail') { //查看
-        openLayer('/account/toDetail/' + accountId, '用户详情')
+        openLayer('/account/toDetail/' + accountId, '账号详情')
 
         //渲染页面上的所有元素
         layui.form.render();
@@ -62,7 +88,7 @@ table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，tes
         });
     } else if (layEvent === 'edit') { //编辑
 
-        openLayer('/account/toUpdate/' + accountId, '修改用户')
+        openLayer('/account/toUpdate/' + accountId, '编辑账号')
 
         //渲染页面上的所有元素
         layui.form.render();
